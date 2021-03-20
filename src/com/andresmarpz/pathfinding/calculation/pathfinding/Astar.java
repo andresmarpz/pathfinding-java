@@ -1,4 +1,4 @@
-package com.andresmarpz.pathfinding.calculation;
+package com.andresmarpz.pathfinding.calculation.pathfinding;
 
 import com.andresmarpz.pathfinding.framework.Grid;
 import com.andresmarpz.pathfinding.framework.Square;
@@ -8,7 +8,7 @@ import javafx.application.Platform;
 
 import java.util.*;
 
-public class Algorithm{
+public class Astar {
 
     private boolean running;
 
@@ -22,7 +22,7 @@ public class Algorithm{
         List<Square> closed = new ArrayList<>();
 
         Square current = end;
-        while(!open.isEmpty() && running) {
+        while(!open.isEmpty() && isRunning()){
             if (!stopwatch.hasReached((float) (speed)))
                 continue;
 

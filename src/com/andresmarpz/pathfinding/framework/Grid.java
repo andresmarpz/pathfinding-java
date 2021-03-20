@@ -2,6 +2,10 @@ package com.andresmarpz.pathfinding.framework;
 
 import javafx.scene.layout.Pane;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class Grid extends Pane{
 
     private int columns, rows;
@@ -26,8 +30,8 @@ public class Grid extends Pane{
 
         square.setLayoutX(x);
         square.setLayoutY(y);
-        square.setPrefWidth(w);
-        square.setPrefHeight(h);
+        square.setPrefWidth(w +1);
+        square.setPrefHeight(h +1);
 
         getChildren().add(square);
     }
@@ -50,5 +54,11 @@ public class Grid extends Pane{
 
     public Square get(int column, int row){
         return (column < this.columns && column >= 0 && row < this.rows && row >= 0) ? squares[column][row] : null;
+    }
+
+    public List<Square> getSquares() {
+        return Arrays.stream(squares)  //'array' is two-dimensional
+                .flatMap(Arrays::stream)
+                .collect(Collectors.toList());
     }
 }

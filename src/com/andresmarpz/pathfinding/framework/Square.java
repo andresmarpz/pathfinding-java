@@ -4,6 +4,9 @@ import com.andresmarpz.pathfinding.animation.list.Zoom;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 public class Square extends StackPane implements Comparable<Square>{
 
     private int column, row;
@@ -94,7 +97,7 @@ public class Square extends StackPane implements Comparable<Square>{
                 setStyle("-fx-background-color:#f2e466; -fx-border-style:solid; -fx-border-width: 0.3; -fx-border-color: #8f8f8f;");
                 break;
             case WALL:
-                setStyle("-fx-background-color:#0c3547; -fx-box-border: transparent;-fx-border-width: 0.0");
+                setStyle("-fx-background-color:#0c3547; -fx-box-border: transparent; -fx-border-width: 0.0;");
                 break;
         }
 

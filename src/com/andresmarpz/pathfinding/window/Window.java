@@ -13,13 +13,21 @@ import java.util.List;
 public class Window extends Application{
 
     private List<Node> pathfinding = new ArrayList<>();
+    private Controller controller;
+
+    private static Window instance;
+    public static Window getInstance() {
+        return instance;
+    }
 
     public static void main(String[] args){
         launch(args);
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) throws Exception{
+        instance = this;
+
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("Window.fxml"));
         Parent root = loader.load();
@@ -30,7 +38,11 @@ public class Window extends Application{
         stage.setScene(scene);
         stage.show();
 
-        Controller controller = loader.getController();
+        controller = loader.getController();
         controller.setup();
+    }
+
+    public Controller getController(){
+        return controller;
     }
 }

@@ -1,6 +1,7 @@
 package com.andresmarpz.pathfinding.window;
 
-import com.andresmarpz.pathfinding.calculation.Algorithm;
+import com.andresmarpz.pathfinding.calculation.mazes.Prims;
+import com.andresmarpz.pathfinding.calculation.pathfinding.Astar;
 import com.andresmarpz.pathfinding.framework.Grid;
 import com.andresmarpz.pathfinding.framework.Square;
 import com.andresmarpz.pathfinding.framework.Type;
@@ -16,7 +17,7 @@ import java.util.Objects;
 
 public class Controller{
 
-    private Algorithm algorithm = new Algorithm();
+    private Astar astar = new Astar();
 
     @FXML
     private BorderPane pane;
@@ -42,25 +43,24 @@ public class Controller{
     private Button reset;
 
     @FXML
-    private ComboBox<String> nodeSelect;
-
-    @FXML
     private MenuButton mazeSelect;
 
     int cols = 35, rows = 30;
 
     public void setup(){
-        MenuItem randomMaze = new MenuItem("");
-        randomMaze.setOnAction(event -> createMaze());
-        mazeSelect.getItems().add(randomMaze);
+        MenuItem prims = new MenuItem("Prim's Algorithm");
+        prims.setOnAction(event -> {
+            new Thread(() -> {
+                resetAll(Type.CALCULATED); resetAll(Type.STEP);
+                new Prims().generate();
+            }).start();
+        });
+
+        mazeSelect.getItems().add(prims);
 
         speedSlider.valueProperty().addListener((observable, oldValue, newValue) -> speedLabel.setText("Speed " +Math.round((Double) newValue) +"ms"));
 
         createGrid();
-    }
-
-    public void createMaze(){
-
     }
 
     private Square dragging;
@@ -112,7 +112,7 @@ public class Controller{
 
     public void handleReset(){
         Platform.runLater(() -> {
-            algorithm.setRunning(false);
+            astar.setRunning(false);
             Arrays.stream(Type.values()).forEach(this::resetAll);
             resetGoals();
         });
@@ -136,8 +136,12 @@ public class Controller{
         if(Objects.nonNull(grid.getStart()) && Objects.nonNull(grid.getEnd())) {
             new Thread(() -> {
                 resetAll(Type.CALCULATED); resetAll(Type.STEP);
-                algorithm.pathfind(grid, speedSlider.getValue(), grid.getStart(), grid.getEnd());
+                astar.pathfind(grid, speedSlider.getValue(), grid.getStart(), grid.getEnd());
             }).start();
         }
+    }
+
+    public Grid getGrid() {
+        return grid;
     }
 }
